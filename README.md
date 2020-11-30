@@ -13,7 +13,8 @@ This project analyzes the application of the FAIR Guiding Principles through fou
 ```
 FAIR-Shiny-Dashboard
   |_ code
-  |_ data  
+  |_ data
+    |_ raw
 ```
 
 ### Getting started
