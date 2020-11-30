@@ -1,5 +1,5 @@
 #---
-#  title: "FAIR Scores: Cleaning Aggregate Check Data"
+#  title: "FAIR Scores: Creating a Shiny Dashboard"
 #  author: "Christopher W. Beltz"
 #  date created: "2020-11-30"
 #  R version: "4.0.2"
