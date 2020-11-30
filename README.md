@@ -6,7 +6,7 @@
 - **Source Code**: [Github](https://github.com/cwbeltz/FAIR_Shiny-Dashboard)
 - **Report**: [Github Pages]()
 
-This project analyzes the application of the FAIR Guiding Principles through 51 individual metadata checks within the ADC. This project is a component my Data Science Fellowship with @NCEAS.
+This project analyzes the application of the FAIR Guiding Principles through four aggregate scores of the metadata within the ADC. This project is a component my Data Science Fellowship with @NCEAS.
 
 ### Repository Structure
 
