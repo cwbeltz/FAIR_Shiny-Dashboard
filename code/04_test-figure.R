@@ -20,7 +20,7 @@ aggChecks_subset <- aggChecks_clean[aggChecks_clean$sequenceId %in% sequenceId_o
 
 
 #graph overall scores on y-axis and sequenceIds on the x-axis, with the score of each pid represented by a point
-aggChecks_subset %>% 
+test_figure <- aggChecks_subset %>% 
   ggplot(aes(x=sequenceId, y=scoreOverall)) +
   geom_point() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
