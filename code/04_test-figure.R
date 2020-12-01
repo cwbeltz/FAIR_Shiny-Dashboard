@@ -12,7 +12,7 @@
 
 #subset data to only those sequenceIds updated within the last week
 sequenceId_over_timeperiod <- aggChecks_clean %>% 
-  filter(dateUploaded > lubridate::floor_date(Sys.time(), "day") - lubridate::days(7)) %>% 
+  filter(dateUploaded > lubridate::floor_date(Sys.time(), "day") - lubridate::days(input$timeframe)) %>% 
   summarize(sequenceId = unique(sequenceId))
 
 aggChecks_subset <- aggChecks_clean[aggChecks_clean$sequenceId %in% sequenceId_over_timeperiod$sequenceId,]

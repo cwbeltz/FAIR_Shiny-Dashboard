@@ -27,6 +27,15 @@ ui <- fluidPage(sliderInput(inputId = "timeframe",
 
 server <- function(input, output) {
   output$scatterplot <- renderPlot({
+    sequenceId_over_timeperiod <- aggChecks_clean %>% 
+      filter(dateUploaded > lubridate::floor_date(Sys.time(), "day") - lubridate::days(input$timeframe)) %>% 
+      summarize(sequenceId = unique(sequenceId))
+    
+    aggChecks_subset <- aggChecks_clean[aggChecks_clean$sequenceId %in% sequenceId_over_timeperiod$sequenceId,]
+    
+    
+    
+    #graph overall scores on y-axis and sequenceIds on the x-axis, with the score of each pid represented by a point
     aggChecks_subset %>% 
       ggplot(aes(x=sequenceId, y=scoreOverall)) +
       geom_point() +
