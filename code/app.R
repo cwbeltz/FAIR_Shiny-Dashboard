@@ -8,7 +8,7 @@
 
 #---
 
-
+library(shiny)
 
 ui <- fluidPage(sliderInput(inputId = "num", 
                             label = "Choose a number", 
