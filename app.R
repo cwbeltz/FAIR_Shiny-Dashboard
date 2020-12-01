@@ -21,14 +21,21 @@ source(here("code", "04_test-figure.R"))
 ui <- fluidPage(sliderInput(inputId = "timeframe", 
                             label = "Choose a number of days", 
                             value = 7, min = 1, max = 31),
-                plotOutput("scatterplot"))
+                plotOutput("scatterplot"),
+                verbatimTextOutput("most_recent_date"))
 
 
 
 server <- function(input, output) {
+  
+  output$most_recent_date <- renderText(paste0("most recent data uploaded on ", as.Date(most_recent_upload$date)))
+  
+  user_defined_date <- reactive({lubridate::floor_date(Sys.time(), "day") - lubridate::days(input$timeframe)})
+  
+  
   output$scatterplot <- renderPlot({
     sequenceId_over_timeperiod <- aggChecks_clean %>% 
-      filter(dateUploaded > lubridate::floor_date(Sys.time(), "day") - lubridate::days(input$timeframe)) %>% 
+      filter(dateUploaded > user_defined_date()) %>% 
       summarize(sequenceId = unique(sequenceId))
     
     aggChecks_subset <- aggChecks_clean[aggChecks_clean$sequenceId %in% sequenceId_over_timeperiod$sequenceId,]
