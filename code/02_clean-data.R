@@ -64,7 +64,7 @@ agg_score_seqPos_pidUnique_ADC <- agg_score_seqPos_ADC[-which(agg_score_seqPos_A
 
 
 #CREAT CLEANED DATASET
-aggChecks_clean <- agg_score_seqPos_pidUnique_ADC
+aggScore_clean <- agg_score_seqPos_pidUnique_ADC
 
 
 ###REMOVE UNNECESSARY STUFF

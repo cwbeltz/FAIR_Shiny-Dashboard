@@ -15,7 +15,7 @@
 #############################################################
 
 #identify initial/final update
-aggChecks_dateSplit <- aggChecks_clean %>%
+aggScore_dateSplit <- aggScore_clean %>%
   group_by(sequenceId) %>%
   arrange(dateUploaded, pid) %>%
   mutate(dateSplit = case_when(
@@ -24,9 +24,9 @@ aggChecks_dateSplit <- aggChecks_clean %>%
     TRUE ~ "INTERMEDIATE"))
 
 #change factor levels for better plotting later
-aggChecks_dateSplit$dateSplit <- factor(aggChecks_dateSplit$dateSplit, levels=c("INITIAL", "INTERMEDIATE", "FINAL"))
+aggScore_dateSplit$dateSplit <- factor(aggScore_dateSplit$dateSplit, levels=c("INITIAL", "INTERMEDIATE", "FINAL"))
 
-levels(aggChecks_dateSplit$dateSplit)
+levels(aggScore_dateSplit$dateSplit)
 
 #previous version that didn't work in 100% of cases
 # mutate(dateSplit = case_when(
@@ -35,4 +35,4 @@ levels(aggChecks_dateSplit$dateSplit)
 #   TRUE ~ "INTERMEDIATE"))
 
 
-aggChecks_clean <- aggChecks_dateSplit
+aggScore_clean <- aggScore_dateSplit

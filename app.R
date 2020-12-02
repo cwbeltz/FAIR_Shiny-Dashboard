@@ -21,42 +21,51 @@ source(here::here("code", "graphical_theme", "colors-shapes.R"))
 
 ############ UI block ############ 
 ui <- fluidPage(sliderInput(inputId = "timeframe", 
-                            label = "Choose a number of days", 
+                            label = "Choose the number of days to examine", 
                             value = 7, min = 1, max = 31),
-                plotOutput("scatterplot"),
-                verbatimTextOutput("most_recent_date"))
+                verbatimTextOutput("most_recent_date"),
+                plotOutput("binned_scatterplot_packageLevel"),
+                plotOutput("barplot_multiple_timespan"))
 
 
 
 ############ Server block ############ 
 server <- function(input, output) {
   
+  #calculate date to subset dataframe based on user input on days before today
+  user_defined_date <- reactive({lubridate::floor_date(Sys.time(), "day") - lubridate::days(input$timeframe)})
+  
   #report dateTime of most recent dataset upload within the FAIR score dataset
   output$most_recent_date <- renderText(paste0("most recent data uploaded on ", as.POSIXct(most_recent_upload$date), " Pacific Time"))
   
   
   
-  #calculate date to subset dataframe based on user input on days before today
-  user_defined_date <- reactive({lubridate::floor_date(Sys.time(), "day") - lubridate::days(input$timeframe)})
+  #barplot
+  output$barplot_multiple_timespan <- renderPlot({
+    
+    aggScore_clean %>% 
+      summarise(n=n())
+    
+  })
   
   
   
   #create plot for the FAIR score for each version of a sequenceID
-  output$scatterplot <- renderPlot({
+  output$binned_scatterplot_packageLevel <- renderPlot({
     
     #obtain sequenceIds for any updated within from user-specified timeframe
-    sequenceId_over_timeperiod <- aggChecks_clean %>% 
+    sequenceId_over_timeperiod <- aggScore_clean %>% 
       dplyr::filter(dateUploaded > user_defined_date()) %>% 
       dplyr::summarize(sequenceId = unique(sequenceId))
     
     #subset dataframe using list of sequenceIds
-    aggChecks_subset <- aggChecks_clean[aggChecks_clean$sequenceId %in% sequenceId_over_timeperiod$sequenceId,]
+    aggScore_subset <- aggScore_clean[aggScore_clean$sequenceId %in% sequenceId_over_timeperiod$sequenceId,]
     
     #graph overall scores on y-axis and sequenceIds on the x-axis, with the score of each pid represented by a point
-    aggChecks_subset %>% 
+    aggScore_subset %>% 
       ggplot(aes(x=sequenceId, y=scoreOverall)) +
-      geom_jitter(data=aggChecks_subset[aggChecks_subset$dateSplit=="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit), alpha=0.3, width=0.3, height=0) +
-      geom_point(data=aggChecks_subset[aggChecks_subset$dateSplit!="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit)) +
+      geom_jitter(data=aggScore_subset[aggScore_subset$dateSplit=="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit), alpha=0.3, width=0.3, height=0) +
+      geom_point(data=aggScore_subset[aggScore_subset$dateSplit!="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit)) +
       scale_fill_manual(values=fillValues,
                         name="",
                         labels=c("FINAL", "INITIAL", "INTERMEDIATE")) +
