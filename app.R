@@ -13,7 +13,10 @@ library(here)
 source(here::here("code", "00_load-packages.R"))
 source(here::here("code", "01_load-data.R"))
 source(here::here("code", "02_clean-data.R"))
-source(here::here("code", "03_calculations.R"))
+source(here::here("code", "03_identify-initial-final-versions.R"))
+source(here::here("code", "04_calculations.R"))
+
+source(here::here("code", "graphical_theme", "theme_modified_ADC.R"))
 
 
 ############ UI block ############ 
@@ -28,7 +31,10 @@ ui <- fluidPage(sliderInput(inputId = "timeframe",
 ############ Server block ############ 
 server <- function(input, output) {
   
-  output$most_recent_date <- renderText(paste0("most recent data uploaded on ", as.Date(most_recent_upload$date)))
+  #report dateTime of most recent dataset upload within the FAIR score dataset
+  output$most_recent_date <- renderText(paste0("most recent data uploaded on ", as.POSIXct(most_recent_upload$date), " Pacific Time"))
+  
+  
   
   #calculate date to subset dataframe based on user input on days before today
   user_defined_date <- reactive({lubridate::floor_date(Sys.time(), "day") - lubridate::days(input$timeframe)})
@@ -49,7 +55,8 @@ server <- function(input, output) {
     #graph overall scores on y-axis and sequenceIds on the x-axis, with the score of each pid represented by a point
     aggChecks_subset %>% 
       ggplot(aes(x=sequenceId, y=scoreOverall)) +
-      geom_point() +
+      geom_point(aes(color=dateSplit)) +
+      theme_ADC_modified +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   })
 }
