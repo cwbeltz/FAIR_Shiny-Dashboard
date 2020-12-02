@@ -19,9 +19,14 @@ aggChecks_dateSplit <- aggChecks_clean %>%
   group_by(sequenceId) %>%
   arrange(dateUploaded, pid) %>%
   mutate(dateSplit = case_when(
-    is.na(obsoletes) ~ "INITIAL",
-    is.na(obsoletedBy) ~ "FINAL",
+    dateUploaded == min(dateUploaded) ~ "INITIAL",
+    dateUploaded == max(dateUploaded) ~ "FINAL",
     TRUE ~ "INTERMEDIATE"))
+
+# mutate(dateSplit = case_when(
+#   is.na(obsoletes) ~ "INITIAL",
+#   is.na(obsoletedBy) ~ "FINAL",
+#   TRUE ~ "INTERMEDIATE"))
 
 
 aggChecks_clean <- aggChecks_dateSplit

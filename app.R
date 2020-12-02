@@ -55,7 +55,8 @@ server <- function(input, output) {
     #graph overall scores on y-axis and sequenceIds on the x-axis, with the score of each pid represented by a point
     aggChecks_subset %>% 
       ggplot(aes(x=sequenceId, y=scoreOverall)) +
-      geom_point(aes(color=dateSplit)) +
+      geom_jitter(data=aggChecks_subset[aggChecks_subset$dateSplit=="INTERMEDIATE",], aes(color=dateSplit), width=0.1, height=0) +
+      geom_point(data=aggChecks_subset[aggChecks_subset$dateSplit!="INTERMEDIATE",], aes(color=dateSplit)) +
       theme_ADC_modified +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   })

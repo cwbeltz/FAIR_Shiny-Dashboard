@@ -17,8 +17,6 @@ most_recent_upload$pid <- aggChecks_clean$pid[which(aggChecks_clean$dateUploaded
   
 
 
-#identify initial submission and final update for each sequenceId
-
 
 
 
