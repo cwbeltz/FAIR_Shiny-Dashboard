@@ -43,8 +43,8 @@ server <- function(input, output) {
   #barplot
   output$barplot_multiple_timespan <- renderPlot({
     
-    aggScore_clean %>% 
-      summarise(n=n())
+    ggplot(data=aggScore_timespan_averages, aes(x=timeframe, y=mean)) +
+      geom_col()
     
   })
   
