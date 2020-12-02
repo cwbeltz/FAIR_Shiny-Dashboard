@@ -15,6 +15,9 @@ FAIR-Shiny-Dashboard
   |_ code
   |_ data
     |_ raw
+  |_ rsconnect
+    |_ shinyapps.io
+      |_ cwbeltz
 ```
 
 ### Getting started
