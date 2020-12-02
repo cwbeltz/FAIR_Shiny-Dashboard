@@ -4,7 +4,7 @@
 - **Contact**: cwbeltz@nceas.ucsb.edu
 - **License**: [MIT License](https://opensource.org/licenses/MIT)
 - **Source Code**: [Github](https://github.com/cwbeltz/FAIR_Shiny-Dashboard)
-- **Report**: [Github Pages]()
+- **Dashboard**: [shinyapps.io](https://cwbeltz.shinyapps.io/nceas-df_fair_shiny-dashboard/)
 
 This project analyzes the application of the FAIR Guiding Principles through four aggregate scores of the metadata within the ADC. This project is a component my Data Science Fellowship with @NCEAS.
 
