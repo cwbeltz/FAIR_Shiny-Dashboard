@@ -23,6 +23,12 @@ aggChecks_dateSplit <- aggChecks_clean %>%
     dateUploaded == max(dateUploaded) ~ "FINAL",
     TRUE ~ "INTERMEDIATE"))
 
+#change factor levels for better plotting later
+aggChecks_dateSplit$dateSplit <- factor(aggChecks_dateSplit$dateSplit, levels=c("INITIAL", "INTERMEDIATE", "FINAL"))
+
+levels(aggChecks_dateSplit$dateSplit)
+
+#previous version that didn't work in 100% of cases
 # mutate(dateSplit = case_when(
 #   is.na(obsoletes) ~ "INITIAL",
 #   is.na(obsoletedBy) ~ "FINAL",

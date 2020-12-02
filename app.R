@@ -17,7 +17,7 @@ source(here::here("code", "03_identify-initial-final-versions.R"))
 source(here::here("code", "04_calculations.R"))
 
 source(here::here("code", "graphical_theme", "theme_modified_ADC.R"))
-
+source(here::here("code", "graphical_theme", "colors-shapes.R"))
 
 ############ UI block ############ 
 ui <- fluidPage(sliderInput(inputId = "timeframe", 
@@ -55,8 +55,20 @@ server <- function(input, output) {
     #graph overall scores on y-axis and sequenceIds on the x-axis, with the score of each pid represented by a point
     aggChecks_subset %>% 
       ggplot(aes(x=sequenceId, y=scoreOverall)) +
-      geom_jitter(data=aggChecks_subset[aggChecks_subset$dateSplit=="INTERMEDIATE",], aes(color=dateSplit), width=0.1, height=0) +
-      geom_point(data=aggChecks_subset[aggChecks_subset$dateSplit!="INTERMEDIATE",], aes(color=dateSplit)) +
+      geom_jitter(data=aggChecks_subset[aggChecks_subset$dateSplit=="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit), alpha=0.3, width=0.3, height=0) +
+      geom_point(data=aggChecks_subset[aggChecks_subset$dateSplit!="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit)) +
+      scale_fill_manual(values=fillValues,
+                        name="",
+                        labels=c("FINAL", "INITIAL", "INTERMEDIATE")) +
+      scale_color_manual(values=colorValues,
+                         name="",
+                         labels=c("FINAL", "INITIAL", "INTERMEDIATE")) +
+      scale_shape_manual(values=shapeValues,
+                         name="",
+                         labels=c("FINAL", "INITIAL", "INTERMEDIATE")) +
+      scale_size_manual(values=sizeValues,
+                         name="",
+                         labels=c("FINAL", "INITIAL", "INTERMEDIATE")) +
       theme_ADC_modified +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   })

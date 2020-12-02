@@ -34,7 +34,7 @@ theme_ADC_modified <-
     panel.grid.minor = element_line(colour = "gray20", size = 0.05),
   ) +
   theme(legend.position='top', 
-        legend.justification='left',
+        legend.justification='center',
         legend.direction='horizontal',
         legend.background = element_blank(),
         legend.box.background = element_blank(),
