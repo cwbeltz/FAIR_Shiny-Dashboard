@@ -61,11 +61,23 @@ server <- function(input, output) {
     #subset dataframe using list of sequenceIds
     aggScore_subset <- aggScore_clean[aggScore_clean$sequenceId %in% sequenceId_over_timeperiod$sequenceId,]
     
+    #order sequenceIds factor levels by chronology
+    seqId_axis_order_chronology <- aggScore_subset %>% 
+      group_by(sequenceId) %>% 
+      arrange(dateUploaded, pid) %>% 
+      slice(tail(row_number(), 1)) %>% 
+      select(sequenceId, dateUploaded)
+      
     #graph overall scores on y-axis and sequenceIds on the x-axis, with the score of each pid represented by a point
     aggScore_subset %>% 
       ggplot(aes(x=sequenceId, y=scoreOverall)) +
       geom_jitter(data=aggScore_subset[aggScore_subset$dateSplit=="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit), alpha=0.3, width=0.3, height=0) +
       geom_point(data=aggScore_subset[aggScore_subset$dateSplit!="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit)) +
+      theme_ADC_modified +
+      ylim(0,1) +
+      ylab("Overall Score") +
+      xlab("Data Package Unique Sequence ID \n (ordered chronologically by most recent update)") +
+      scale_x_discrete(limits = seqId_axis_order_chronology$sequenceId[order(seqId_axis_order_chronology$dateUploaded)]) +
       scale_fill_manual(values=fillValues,
                         name="",
                         labels=c("FINAL", "INITIAL", "INTERMEDIATE")) +
@@ -78,8 +90,10 @@ server <- function(input, output) {
       scale_size_manual(values=sizeValues,
                          name="",
                          labels=c("FINAL", "INITIAL", "INTERMEDIATE")) +
-      theme_ADC_modified +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    
+    
   })
 }
 
