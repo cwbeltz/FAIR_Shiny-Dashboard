@@ -21,8 +21,11 @@ source(here::here("code", "graphical_theme", "colors-shapes.R"))
 
 ############ UI block ############ 
 ui <- fluidPage(sliderInput(inputId = "timeframe", 
-                            label = "Choose the number of days to examine", 
-                            value = 7, min = 1, max = 31),
+                label = "Date Range:",
+                min = as.Date("2016-03-21","%Y-%m-%d"),
+                max = as.Date(Sys.Date(),"%Y-%m-%d"),
+                value = c(Sys.Date()-14, Sys.Date()), 
+                timeFormat="%Y-%m-%d", step = 1),
                 verbatimTextOutput("most_recent_date"),
                 plotOutput("binned_scatterplot_packageLevel"),
                 plotOutput("linegraph_FAIR_overview"),
@@ -34,7 +37,7 @@ ui <- fluidPage(sliderInput(inputId = "timeframe",
 server <- function(input, output) {
   
   #calculate date to subset dataframe based on user input on days before today
-  user_defined_date <- reactive({lubridate::floor_date(Sys.time(), "day") - lubridate::days(input$timeframe)})
+  #user_defined_date <- reactive({lubridate::floor_date(Sys.time(), "day") - lubridate::days(input$timeframe)})
   
   #report dateTime of most recent dataset upload within the FAIR score dataset
   output$most_recent_date <- renderText(paste0("most recent data uploaded on ", as.POSIXct(most_recent_upload$date), " Pacific Time"))
@@ -56,7 +59,7 @@ server <- function(input, output) {
     
     #obtain sequenceIds for any updated within from user-specified timeframe
     sequenceId_over_timeperiod <- aggScore_clean %>% 
-      dplyr::filter(dateUploaded > user_defined_date()) %>% 
+      dplyr::filter(dateUploaded >= input$timeframe[1] & dateUploaded <= input$timeframe[2]) %>% 
       dplyr::summarize(sequenceId = unique(sequenceId))
     
     #subset dataframe using list of sequenceIds
