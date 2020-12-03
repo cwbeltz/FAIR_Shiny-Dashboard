@@ -25,6 +25,7 @@ ui <- fluidPage(sliderInput(inputId = "timeframe",
                             value = 7, min = 1, max = 31),
                 verbatimTextOutput("most_recent_date"),
                 plotOutput("binned_scatterplot_packageLevel"),
+                plotOutput("linegraph_FAIR_overview"),
                 plotOutput("barplot_multiple_timespan"))
 
 
@@ -40,7 +41,7 @@ server <- function(input, output) {
   
   
   
-  #barplot
+####barplot
   output$barplot_multiple_timespan <- renderPlot({
     
     ggplot(data=aggScore_timespan_averages, aes(x=timeframe, y=mean)) +
@@ -50,7 +51,7 @@ server <- function(input, output) {
   
   
   
-  #create plot for the FAIR score for each version of a sequenceID
+##### create plot for the FAIR score for each version of a sequenceID ####
   output$binned_scatterplot_packageLevel <- renderPlot({
     
     #obtain sequenceIds for any updated within from user-specified timeframe
@@ -91,10 +92,127 @@ server <- function(input, output) {
                          name="",
                          labels=c("FINAL", "INITIAL", "INTERMEDIATE")) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  })
+  
+  
+  
+####barplot
+  output$linegraph_FAIR_overview <- renderPlot({
+    
+    #summarize FAIR scores and uploads on both a weekly and monthly basis
+    gganimate_NSF_weekly <- aggregate_score_ADC %>%
+      filter(dateUploaded > as.Date("2016-03-20")) %>%
+      mutate(year = lubridate::year(dateUploaded),
+             month = lubridate::month(dateUploaded),
+             week = lubridate::week(dateUploaded),
+             date_floor = lubridate::floor_date(dateUploaded, "1 week")) %>%
+      group_by(year, month, week, date_floor) %>%
+      summarize(n=n(),
+                meanOverall = mean(scoreOverall),
+                meanFindable = mean(scoreFindable),
+                meanAccessible = mean(scoreAccessible),
+                meanInteroperable = mean(scoreInteroperable),
+                meanReusable = mean(scoreReusable))
+    
+    #monthly
+    gganimate_NSF_monthly <- aggregate_score_ADC %>%
+      filter(dateUploaded > as.Date("2016-03-20")) %>%
+      mutate(year = lubridate::year(dateUploaded),
+             month = lubridate::month(dateUploaded),
+             week = lubridate::week(dateUploaded),
+             date_floor = lubridate::floor_date(dateUploaded, "1 month")) %>%
+      group_by(year, month, date_floor) %>%
+      summarize(n=n(),
+                meanOverall = mean(scoreOverall),
+                meanFindable = mean(scoreFindable),
+                meanAccessible = mean(scoreAccessible),
+                meanInteroperable = mean(scoreInteroperable),
+                meanReusable = mean(scoreReusable))
+    
+    gganimate_NSF_monthly_nOnly <- gganimate_NSF_monthly %>% 
+      select(date_floor, n)
+    
+    gganimate_NSF_monthly <- gganimate_NSF_monthly %>% 
+      select(!n) %>% 
+      pivot_longer(cols = c(meanOverall, meanFindable, meanAccessible, meanInteroperable, meanReusable),
+                   names_to = "type",
+                   values_to = "score")
+    
+    #set levels for better plotting later
+    gganimate_NSF_monthly$type <- factor(gganimate_NSF_monthly$type, levels = c("meanOverall", "meanFindable", "meanAccessible", "meanInteroperable", "meanReusable"))
+    
+    #set graphic parameters
+    colorValues <- c("meanOverall" = "black",
+                     "meanFindable" = "darkgreen", 
+                     "meanAccessible" = "darkblue",
+                     "meanInteroperable" = "orange",
+                     "meanReusable" = "firebrick")
+    
+    lineValues <- c("meanOverall" = "solid",
+                    "meanFindable" = "dashed", 
+                    "meanAccessible" = "dashed",
+                    "meanInteroperable" = "dashed",
+                    "meanReusable" = "dashed")
+    
+    sizeValues <- c("meanOverall" = 1.5,
+                    "meanFindable" = 0.5, 
+                    "meanAccessible" = 0.5,
+                    "meanInteroperable" = 0.5,
+                    "meanReusable" = 0.5)
+    
+    alphaValues <- c("meanOverall" = 1.0,
+                     "meanFindable" = 0.75, 
+                     "meanAccessible" = 0.75,
+                     "meanInteroperable" = 0.75,
+                     "meanReusable" = 0.75)
     
     
+    #create static figure
+    ggplot() +
+      annotate('rect', xmin = as.POSIXct("2016-03-22"), xmax = as.POSIXct("2016-12-31"), ymin = -Inf, ymax = -0.1, fill='#084594', alpha=0.3) +
+      annotate('rect', xmin = as.POSIXct('2016-12-31'), xmax = as.POSIXct('2017-09-15'), ymin = -Inf, ymax = -0.1, fill='#2171B5', alpha=0.3) +
+      annotate('rect', xmin = as.POSIXct('2017-09-15'), xmax = as.POSIXct('2018-06-15'), ymin = -Inf, ymax = -0.1, fill='#4292C6', alpha=0.3) +
+      annotate('rect', xmin = as.POSIXct('2018-06-15'), xmax = as.POSIXct('2019-03-15'), ymin = -Inf, ymax = -0.1, fill="#6BAED6", alpha=0.3) +
+      annotate('rect', xmin = as.POSIXct('2019-03-15'), xmax = as.POSIXct('2020-01-01'), ymin = -Inf, ymax = -0.1, fill="grey55", alpha=0.3) +
+      annotate('rect', xmin = as.POSIXct('2020-01-01'), xmax = as.POSIXct('2020-10-15'), ymin = -Inf, ymax = -0.1, fill="#6BAED6", alpha=0.3) +
+      annotate('text', x = as.POSIXct('2016-08-21'), y = -150, label = "ADC Opens", fontface='bold.italic', size = 4) +
+      annotate('text', x = as.POSIXct('2017-05-25'), y = -150, label = "special thing\n #1", fontface = 'bold.italic', size = 4) +
+      annotate('text', x = as.POSIXct('2018-02-18'), y = -150, label = "special thing\n #2", fontface = 'bold.italic', size = 4) +
+      annotate('text', x = as.POSIXct('2018-10-31'), y = -150, label = "special thing\n #3", fontface = 'bold.italic', size = 4) +
+      annotate('text', x = as.POSIXct('2019-08-15'), y = -150, label = "FAIR 0.2.1", fontface = 'bold.italic', size = 4) +
+      annotate('text', x = as.POSIXct('2020-05-25'), y = -150, label = "FAIR 0.3.2", fontface = 'bold.italic', size = 4) +
+      annotate("curve", x = as.POSIXct("2016-09-15"), xend = as.POSIXct("2016-03-30"), y = 3950, yend = 2750, curvature = 0.5, 
+               size = 1.0, arrow = arrow(length = unit(2, "mm")), colour = "firebrick") +
+      annotate('text', x = as.POSIXct('2017-04-15'), y = 3950, label = "ACADIS data imported", fontface = 'bold.italic', size = 5) +
+      geom_bar(data = gganimate_NSF_monthly_nOnly, aes(x=date_floor, y=n, group=seq_along(date_floor)), fill="gray40", stat = 'identity', alpha=0.50) +
+      geom_line(data = gganimate_NSF_monthly, aes(x=date_floor, y=score*4000, linetype=type, color=type, size=type, alpha=type)) +
+      scale_color_manual(values=colorValues,
+                         name="FAIR Score Category:",
+                         labels=c("Overall", "Findable", "Accessible", "Interoperable", "Reusable")) +
+      scale_linetype_manual(values=lineValues,
+                            name="FAIR Score Category:",
+                            labels=c("Overall", "Findable", "Accessible", "Interoperable", "Reusable")) +
+      scale_size_manual(values=sizeValues,
+                        name="FAIR Score Category:",
+                        labels=c("Overall", "Findable", "Accessible", "Interoperable", "Reusable")) +
+      scale_alpha_manual(values=alphaValues,
+                         name="FAIR Score Category:",
+                         labels=c("Overall", "Findable", "Accessible", "Interoperable", "Reusable")) +
+      scale_y_continuous(name = 'Monthly Dataset Uploads', 
+                         sec.axis = sec_axis(~./4000, name = "Mean Monthly FAIR Score")) +
+      labs(x = "Date") +
+      scale_x_datetime(date_breaks = "1 year", date_labels="%Y") +
+      theme_ADC_modified +
+      theme(legend.position = "top") +
+      theme(axis.line.y.left = element_line(color = "gray40"),
+            axis.ticks.y.left = element_line(color = "gray40"),
+            axis.text.y.left = element_text(color="gray40"),
+            axis.title.y.left = element_text(color="gray40"))
     
   })
+  
+  
+  
 }
 
 
