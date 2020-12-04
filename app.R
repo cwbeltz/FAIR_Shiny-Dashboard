@@ -175,20 +175,15 @@ server <- function(input, output) {
     #create static figure
     ggplot() +
       annotate('rect', xmin = as.POSIXct("2016-03-22"), xmax = as.POSIXct("2016-12-31"), ymin = -Inf, ymax = -0.1, fill='#084594', alpha=0.3) +
-      annotate('rect', xmin = as.POSIXct('2016-12-31'), xmax = as.POSIXct('2017-09-15'), ymin = -Inf, ymax = -0.1, fill='#2171B5', alpha=0.3) +
-      annotate('rect', xmin = as.POSIXct('2017-09-15'), xmax = as.POSIXct('2018-06-15'), ymin = -Inf, ymax = -0.1, fill='#4292C6', alpha=0.3) +
-      annotate('rect', xmin = as.POSIXct('2018-06-15'), xmax = as.POSIXct('2019-03-15'), ymin = -Inf, ymax = -0.1, fill="#6BAED6", alpha=0.3) +
-      annotate('rect', xmin = as.POSIXct('2019-03-15'), xmax = as.POSIXct('2020-01-01'), ymin = -Inf, ymax = -0.1, fill="grey55", alpha=0.3) +
-      annotate('rect', xmin = as.POSIXct('2020-01-01'), xmax = as.POSIXct('2020-10-15'), ymin = -Inf, ymax = -0.1, fill="#6BAED6", alpha=0.3) +
+      annotate('rect', xmin = as.POSIXct('2017-01-01'), xmax = as.POSIXct('2017-12-31'), ymin = -Inf, ymax = -0.1, fill='#2171B5', alpha=0.3) +
+      annotate('rect', xmin = as.POSIXct('2018-01-01'), xmax = as.POSIXct('2018-12-31'), ymin = -Inf, ymax = -0.1, fill='#4292C6', alpha=0.3) +
+      annotate('rect', xmin = as.POSIXct('2019-01-01'), xmax = as.POSIXct('2019-12-31'), ymin = -Inf, ymax = -0.1, fill="#6BAED6", alpha=0.3) +
+      annotate('rect', xmin = as.POSIXct('2020-01-01'), xmax = as.POSIXct(Sys.Date()), ymin = -Inf, ymax = -0.1, fill="#6BAED6", alpha=0.3) +
       annotate('text', x = as.POSIXct('2016-08-21'), y = -150, label = "ADC Opens", fontface='bold.italic', size = 4) +
-      annotate('text', x = as.POSIXct('2017-05-25'), y = -150, label = "special thing\n #1", fontface = 'bold.italic', size = 4) +
-      annotate('text', x = as.POSIXct('2018-02-18'), y = -150, label = "special thing\n #2", fontface = 'bold.italic', size = 4) +
-      annotate('text', x = as.POSIXct('2018-10-31'), y = -150, label = "special thing\n #3", fontface = 'bold.italic', size = 4) +
-      annotate('text', x = as.POSIXct('2019-08-15'), y = -150, label = "FAIR 0.2.1", fontface = 'bold.italic', size = 4) +
-      annotate('text', x = as.POSIXct('2020-05-25'), y = -150, label = "FAIR 0.3.2", fontface = 'bold.italic', size = 4) +
-      annotate("curve", x = as.POSIXct("2016-09-15"), xend = as.POSIXct("2016-03-30"), y = 3950, yend = 2750, curvature = 0.5, 
-               size = 1.0, arrow = arrow(length = unit(2, "mm")), colour = "firebrick") +
-      annotate('text', x = as.POSIXct('2017-04-15'), y = 3950, label = "ACADIS data imported", fontface = 'bold.italic', size = 5) +
+      annotate('text', x = as.POSIXct('2017-06-30'), y = -150, label = "something here", fontface = 'bold.italic', size = 4) +
+      annotate('text', x = as.POSIXct('2018-06-30'), y = -150, label = "something here", fontface = 'bold.italic', size = 4) +
+      annotate('text', x = as.POSIXct('2019-06-30'), y = -150, label = "something here", fontface = 'bold.italic', size = 4) +
+      annotate('text', x = as.POSIXct('2020-06-30'), y = -150, label = "something here", fontface = 'bold.italic', size = 4) +
       geom_bar(data = gganimate_NSF_monthly_nOnly, aes(x=date_floor, y=n, group=seq_along(date_floor)), fill="gray40", stat = 'identity', alpha=0.50) +
       geom_line(data = gganimate_NSF_monthly, aes(x=date_floor, y=score*4000, linetype=type, color=type, size=type, alpha=type)) +
       scale_color_manual(values=colorValues,
@@ -212,7 +207,8 @@ server <- function(input, output) {
       theme(axis.line.y.left = element_line(color = "gray40"),
             axis.ticks.y.left = element_line(color = "gray40"),
             axis.text.y.left = element_text(color="gray40"),
-            axis.title.y.left = element_text(color="gray40"))
+            axis.title.y.left = element_text(color="gray40")) +
+      annotate('rect', xmin = as.POSIXct(input$timeframe[1]), xmax = as.POSIXct(input$timeframe[2]), ymin = -Inf, ymax = Inf, fill='gray80', alpha=0.3)
     
   })
   
