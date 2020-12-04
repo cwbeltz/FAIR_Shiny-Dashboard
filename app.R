@@ -24,15 +24,15 @@ source(here::here("code", "graphical_theme", "colors-shapes.R"))
 ############ UI block ############ 
 ui <- fluidPage(
   tags$h1("FAIR Metadata Analysis Tool"),
-  verbatimTextOutput("most_recent_date"),
   fluidRow(
     column(4, 
-           sliderInput(inputId = "timeframe", 
+           wellPanel(sliderInput(inputId = "timeframe", 
                        label = "Date Range:",
                        min = as.Date("2016-03-21","%Y-%m-%d"),
                        max = as.Date(Sys.Date(),"%Y-%m-%d"),
                        value = c(Sys.Date()-14, Sys.Date()), 
-                       timeFormat="%Y-%m-%d", step = 7)),
+                       timeFormat="%Y-%m-%d", step = 7),
+                     verbatimTextOutput("most_recent_date"))),
     column(8,
            plotOutput("binned_scatterplot_packageLevel")),
     fluidRow(
@@ -51,7 +51,7 @@ server <- function(input, output) {
   #user_defined_date <- reactive({lubridate::floor_date(Sys.time(), "day") - lubridate::days(input$timeframe)})
   
   #report dateTime of most recent dataset upload within the FAIR score dataset
-  output$most_recent_date <- renderText(paste0("most recent data uploaded on ", as.POSIXct(most_recent_upload$date), " Pacific Time"))
+  output$most_recent_date <- renderText(paste0("most recent data uploaded on ", as.POSIXct(most_recent_upload$date), " PT"))
   
   
   
@@ -105,7 +105,7 @@ server <- function(input, output) {
       #                    labels=c("", "")) +
       xlim(0,1) +
       theme_ADC_modified +
-      xlab("Mean FAIR Score for the Selected Time Period") +
+      xlab("Mean Score for the Selected Time Period") +
       ylab("") +
       theme(legend.position="top")
     
