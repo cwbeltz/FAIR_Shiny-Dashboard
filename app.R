@@ -19,17 +19,28 @@ source(here::here("code", "04_calculations.R"))
 source(here::here("code", "graphical_theme", "theme_modified_ADC.R"))
 source(here::here("code", "graphical_theme", "colors-shapes.R"))
 
+
+
 ############ UI block ############ 
-ui <- fluidPage(sliderInput(inputId = "timeframe", 
-                label = "Date Range:",
-                min = as.Date("2016-03-21","%Y-%m-%d"),
-                max = as.Date(Sys.Date(),"%Y-%m-%d"),
-                value = c(Sys.Date()-14, Sys.Date()), 
-                timeFormat="%Y-%m-%d", step = 1),
-                verbatimTextOutput("most_recent_date"),
-                plotOutput("binned_scatterplot_packageLevel"),
-                plotOutput("linegraph_FAIR_overview"),
-                plotOutput("barplot_detailed_scores"))
+ui <- fluidPage(
+  tags$h1("FAIR Metadata Analysis Tool"),
+  verbatimTextOutput("most_recent_date"),
+  fluidRow(
+    column(4, 
+           sliderInput(inputId = "timeframe", 
+                       label = "Date Range:",
+                       min = as.Date("2016-03-21","%Y-%m-%d"),
+                       max = as.Date(Sys.Date(),"%Y-%m-%d"),
+                       value = c(Sys.Date()-14, Sys.Date()), 
+                       timeFormat="%Y-%m-%d", step = 7)),
+    column(8,
+           plotOutput("binned_scatterplot_packageLevel")),
+    fluidRow(
+      column(4, plotOutput("barplot_detailed_scores")),
+      column(8, plotOutput("linegraph_FAIR_overview"))
+    )
+  )
+)
 
 
 
