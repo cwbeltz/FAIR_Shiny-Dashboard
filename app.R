@@ -29,7 +29,7 @@ ui <- fluidPage(sliderInput(inputId = "timeframe",
                 verbatimTextOutput("most_recent_date"),
                 plotOutput("binned_scatterplot_packageLevel"),
                 plotOutput("linegraph_FAIR_overview"),
-                plotOutput("barplot_multiple_timespan"))
+                plotOutput("barplot_detailed_scores"))
 
 
 
@@ -45,10 +45,61 @@ server <- function(input, output) {
   
   
 ####barplot
-  output$barplot_multiple_timespan <- renderPlot({
+  output$barplot_detailed_scores <- renderPlot({
     
-    ggplot(data=aggScore_timespan_averages, aes(x=timeframe, y=mean)) +
-      geom_col()
+    plotData_sidewaysScatter <- aggScore_clean %>%
+      dplyr::filter(dateSplit != "INTERMEDIATE") %>% 
+      dplyr::filter(dateUploaded >= input$timeframe[1] & dateUploaded <= input$timeframe[2]) %>%
+      group_by(dateSplit) %>% 
+      summarise(OVERALL = mean(scoreOverall),
+                Findable = mean(scoreFindable),
+                Accessible = mean(scoreAccessible),
+                Interoperable = mean(scoreInteroperable),
+                Reusable = mean(scoreReusable)) %>%
+      pivot_longer(cols=c(OVERALL, Findable, Accessible, Interoperable, Reusable),
+                   names_to = "scoreType",
+                   values_to = "meanScore")
+    
+    #change dateSplit variable names to re-order in legend
+    plotData_sidewaysScatter$dateSplit <- ifelse(plotData_sidewaysScatter$dateSplit=="INITIAL", "2INITIAL", "3FINAL")
+    
+    #change levels for better plotting
+    plotData_sidewaysScatter$dateSplit <- factor(plotData_sidewaysScatter$dateSplit, levels = c("1preADC", "2INITIAL", "3FINAL"))
+    plotData_sidewaysScatter$scoreType <- factor(plotData_sidewaysScatter$scoreType, levels = c("Reusable", "Interoperable", "Accessible", "Findable", "OVERALL"))
+    
+    
+    ######################################
+    # Data Visualization
+    ######################################
+    
+    #create graphical parameters
+    colorValues <- c("2INITIAL" = "gray60", "3FINAL" = "orangered1")
+    fillValues <- c("1preADC" = "yellow", "2INITIAL" = "gray80", "3FINAL" = "black")
+    shapeValues <- c("2INITIAL" = 22, "3FINAL" = 21)
+    sizeValues <- c("2INITIAL" = 3, "3FINAL" = 2.5)
+    
+    
+    #plot it!
+    sideways_binned_scatterplot <- ggplot(plotData_sidewaysScatter, aes(x=meanScore, y=scoreType)) +
+      geom_line(aes(group=scoreType), color="gray60", size=2) +
+      geom_point(aes(fill=dateSplit, shape=dateSplit), size=4) +
+      scale_shape_manual(values=shapeValues,
+                         name="",
+                         labels=c("INITIAL", "FINAL")) +
+      scale_fill_manual(values=fillValues,
+                        name="",
+                        labels=c("INITIAL", "FINAL")) +
+      # scale_color_manual(values=colorValues,
+      #                    name="",
+      #                    labels=c("", "")) +
+      xlim(0,1) +
+      theme_ADC_modified +
+      xlab("Mean FAIR Score for the Selected Time Period") +
+      ylab("") +
+      theme(legend.position="top")
+    
+    sideways_binned_scatterplot
+    
     
   })
   
@@ -104,7 +155,7 @@ server <- function(input, output) {
   
   
   
-####barplot
+#### FAIR score time series ####
   output$linegraph_FAIR_overview <- renderPlot({
     
     #summarize FAIR scores and uploads on both a weekly and monthly basis
