@@ -177,7 +177,7 @@ server <- function(input, output) {
     
     #create static figure
     ggplot() +
-      geom_bar(data = gganimate_NSF_monthly_nOnly, aes(x=date_floor, y=n, group=seq_along(date_floor)), fill="gray40", stat = 'identity', alpha=0.50) +
+      geom_bar(data = gganimate_NSF_monthly_nOnly, aes(x=date_floor, y=n, group=seq_along(date_floor)), fill="gray65", stat = 'identity', alpha=0.8) +
       geom_line(data = gganimate_NSF_monthly, aes(x=date_floor, y=score*4000, linetype=type, color=type, size=type, alpha=type)) +
       scale_color_manual(values=colorValues,
                          name="FAIR Score Category:",
