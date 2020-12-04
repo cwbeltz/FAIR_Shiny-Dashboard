@@ -73,8 +73,8 @@ server <- function(input, output) {
       select(sequenceId, dateUploaded)
       
     #graph overall scores on y-axis and sequenceIds on the x-axis, with the score of each pid represented by a point
-    aggScore_subset %>% 
-      ggplot(aes(x=sequenceId, y=scoreOverall)) +
+
+      scatter_plot <- ggplot(data=aggScore_subset, aes(x=sequenceId, y=scoreOverall)) +
       geom_jitter(data=aggScore_subset[aggScore_subset$dateSplit=="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit), alpha=0.3, width=0.3, height=0) +
       geom_point(data=aggScore_subset[aggScore_subset$dateSplit!="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit)) +
       theme_ADC_modified +
@@ -95,6 +95,8 @@ server <- function(input, output) {
                          name="",
                          labels=c("FINAL", "INITIAL", "INTERMEDIATE")) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      
+      scatter_plot
   })
   
   
