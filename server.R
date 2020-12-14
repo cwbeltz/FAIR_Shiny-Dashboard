@@ -1,20 +1,23 @@
 ############ Server block ############ 
 server <- function(input, output) {
   
-  #calculate date to subset dataframe based on user input on days before today
-  #user_defined_date <- reactive({lubridate::floor_date(Sys.time(), "day") - lubridate::days(input$timeframe)})
-  
   #report dateTime of most recent dataset upload within the FAIR score dataset
   output$most_recent_date <- renderText(paste0("most recent data uploaded on ", as.POSIXct(most_recent_upload$date), " PT"))
   
   
   
   ####barplot
+  
+  data_subset <- eventReactive(input$clicks, {
+    aggScore_clean %>%
+      dplyr::filter(dateUploaded >= input$timeframe[1] & dateUploaded <= input$timeframe[2])},
+    ignoreNULL = FALSE)
+  
   output$barplot_detailed_scores <- renderPlot({
     
-    plotData_sidewaysScatter <- aggScore_clean %>%
+    plotData_sidewaysScatter <- data_subset() %>%
       dplyr::filter(dateSplit != "INTERMEDIATE") %>% 
-      dplyr::filter(dateUploaded >= input$timeframe[1] & dateUploaded <= input$timeframe[2]) %>%
+#      dplyr::filter(dateUploaded >= input$timeframe[1] & dateUploaded <= input$timeframe[2]) %>%
       group_by(dateSplit) %>% 
       summarise(OVERALL = mean(scoreOverall),
                 Findable = mean(scoreFindable),
