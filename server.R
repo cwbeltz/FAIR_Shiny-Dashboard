@@ -16,7 +16,6 @@ server <- function(input, output) {
     
     plotData_sidewaysScatter <- data_subset() %>%
       dplyr::filter(dateSplit != "INTERMEDIATE") %>% 
-#      dplyr::filter(dateUploaded >= input$timeframe[1] & dateUploaded <= input$timeframe[2]) %>%
       group_by(dateSplit) %>% 
       summarise(OVERALL = mean(scoreOverall),
                 Findable = mean(scoreFindable),
@@ -60,15 +59,14 @@ server <- function(input, output) {
   output$binned_scatterplot_packageLevel <- renderPlot({
     
     #obtain sequenceIds for any updated within from user-specified timeframe
-    sequenceId_over_timeperiod <- data_subset() %>% 
-#      dplyr::filter(dateUploaded >= input$timeframe[1] & dateUploaded <= input$timeframe[2]) %>% 
+    sequenceId_over_timeperiod <- data_subset() %>%
       dplyr::summarize(sequenceId = unique(sequenceId))
     
     #subset dataframe using list of sequenceIds
-    aggScore_subset <- aggScore_clean[aggScore_clean$sequenceId %in% sequenceId_over_timeperiod$sequenceId,]
+    plotData_dataPackages <- aggScore_clean[aggScore_clean$sequenceId %in% sequenceId_over_timeperiod$sequenceId,]
     
     #order sequenceIds factor levels by chronology
-    seqId_axis_order_chronology <- aggScore_subset %>% 
+    seqId_axis_order_chronology <- plotData_dataPackages %>% 
       group_by(sequenceId) %>% 
       arrange(dateUploaded, pid) %>% 
       slice(tail(row_number(), 1)) %>% 
@@ -76,9 +74,9 @@ server <- function(input, output) {
     
     #graph overall scores on y-axis and sequenceIds on the x-axis, with the score of each pid represented by a point
     
-    scatter_plot <- ggplot(data=aggScore_subset, aes(x=sequenceId, y=scoreOverall)) +
-      geom_jitter(data=aggScore_subset[aggScore_subset$dateSplit=="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit), alpha=0.3, width=0.3, height=0) +
-      geom_point(data=aggScore_subset[aggScore_subset$dateSplit!="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit)) +
+    scatter_plot <- ggplot(data=plotData_dataPackages, aes(x=sequenceId, y=scoreOverall)) +
+      geom_jitter(data=plotData_dataPackages[plotData_dataPackages$dateSplit=="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit), alpha=0.3, width=0.3, height=0) +
+      geom_point(data=plotData_dataPackages[plotData_dataPackages$dateSplit!="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit)) +
       theme_ADC_modified +
       ylim(0,1) +
       ylab("Overall Score") +
