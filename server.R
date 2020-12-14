@@ -25,38 +25,23 @@ server <- function(input, output) {
                    names_to = "scoreType",
                    values_to = "meanScore")
     
-    #change dateSplit variable names to re-order in legend
-    plotData_sidewaysScatter$dateSplit <- ifelse(plotData_sidewaysScatter$dateSplit=="INITIAL", "2INITIAL", "3FINAL")
-    
-    #change levels for better plotting
-    plotData_sidewaysScatter$dateSplit <- factor(plotData_sidewaysScatter$dateSplit, levels = c("1preADC", "2INITIAL", "3FINAL"))
     plotData_sidewaysScatter$scoreType <- factor(plotData_sidewaysScatter$scoreType, levels = c("Reusable", "Interoperable", "Accessible", "Findable", "OVERALL"))
     
     
-    ######################################
-    # Data Visualization
-    ######################################
     
-    #create graphical parameters
-    colorValues <- c("2INITIAL" = "gray60", "3FINAL" = "orangered1")
-    fillValues <- c("1preADC" = "yellow", "2INITIAL" = "gray80", "3FINAL" = "black")
-    shapeValues <- c("2INITIAL" = 22, "3FINAL" = 21)
-    sizeValues <- c("2INITIAL" = 3, "3FINAL" = 2.5)
-    
-    
-    #plot it!
+
     sideways_binned_scatterplot <- ggplot(plotData_sidewaysScatter, aes(x=meanScore, y=scoreType)) +
-      geom_line(aes(group=scoreType), color="gray60", size=2) +
-      geom_point(aes(fill=dateSplit, shape=dateSplit), size=4) +
+      geom_line(aes(group=scoreType), color="gray60", size=1.5) +
+      geom_point(aes(fill=dateSplit, shape=dateSplit, size=dateSplit)) +
       scale_shape_manual(values=shapeValues,
                          name="",
                          labels=c("INITIAL", "FINAL")) +
       scale_fill_manual(values=fillValues,
                         name="",
                         labels=c("INITIAL", "FINAL")) +
-      # scale_color_manual(values=colorValues,
-      #                    name="",
-      #                    labels=c("", "")) +
+      scale_size_manual(values=sizeValues,
+                        name="",
+                        labels=c("INITIAL", "FINAL")) +
       xlim(0,1) +
       theme_ADC_modified +
       xlab("Mean Score for the Selected Time Period") +
@@ -64,7 +49,6 @@ server <- function(input, output) {
       theme(legend.position="top")
     
     sideways_binned_scatterplot
-    
     
   })
   
@@ -123,22 +107,7 @@ server <- function(input, output) {
   #### FAIR score time series ####
   output$linegraph_FAIR_overview <- renderPlot({
     
-    #summarize FAIR scores and uploads on both a weekly and monthly basis
-    gganimate_NSF_weekly <- aggregate_score_ADC %>%
-      filter(dateUploaded > as.Date("2016-03-20")) %>%
-      mutate(year = lubridate::year(dateUploaded),
-             month = lubridate::month(dateUploaded),
-             week = lubridate::week(dateUploaded),
-             date_floor = lubridate::floor_date(dateUploaded, "1 week")) %>%
-      group_by(year, month, week, date_floor) %>%
-      summarize(n=n(),
-                meanOverall = mean(scoreOverall),
-                meanFindable = mean(scoreFindable),
-                meanAccessible = mean(scoreAccessible),
-                meanInteroperable = mean(scoreInteroperable),
-                meanReusable = mean(scoreReusable))
-    
-    #monthly
+    #summarize FAIR scores and uploads on a monthly basis
     gganimate_NSF_monthly <- aggregate_score_ADC %>%
       filter(dateUploaded > as.Date("2016-03-20")) %>%
       mutate(year = lubridate::year(dateUploaded),
