@@ -4,15 +4,14 @@ server <- function(input, output) {
   #report dateTime of most recent dataset upload within the FAIR score dataset
   output$most_recent_date <- renderText(paste0("most recent data uploaded on ", as.POSIXct(most_recent_upload$date), " PT"))
   
-  
-  
-  ####barplot
-  
   data_subset <- eventReactive(input$clicks, {
     aggScore_clean %>%
       dplyr::filter(dateUploaded >= input$timeframe[1] & dateUploaded <= input$timeframe[2])},
     ignoreNULL = FALSE)
   
+  
+  
+  ####barplot
   output$barplot_detailed_scores <- renderPlot({
     
     plotData_sidewaysScatter <- data_subset() %>%
@@ -61,8 +60,8 @@ server <- function(input, output) {
   output$binned_scatterplot_packageLevel <- renderPlot({
     
     #obtain sequenceIds for any updated within from user-specified timeframe
-    sequenceId_over_timeperiod <- aggScore_clean %>% 
-      dplyr::filter(dateUploaded >= input$timeframe[1] & dateUploaded <= input$timeframe[2]) %>% 
+    sequenceId_over_timeperiod <- data_subset() %>% 
+#      dplyr::filter(dateUploaded >= input$timeframe[1] & dateUploaded <= input$timeframe[2]) %>% 
       dplyr::summarize(sequenceId = unique(sequenceId))
     
     #subset dataframe using list of sequenceIds
