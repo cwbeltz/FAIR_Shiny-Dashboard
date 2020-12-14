@@ -10,7 +10,9 @@ ui <- fluidPage(
                                  max = as.Date(Sys.Date(),"%Y-%m-%d"),
                                  value = c(Sys.Date()-14, Sys.Date()), 
                                  timeFormat="%Y-%m-%d", step = 7),
-                     verbatimTextOutput("most_recent_date"))),
+                     verbatimTextOutput("most_recent_date"),
+                     actionButton(inputId = "clicks",
+                                  label = "Update Timespan"))),
     column(8,
            plotOutput("binned_scatterplot_packageLevel")),
     fluidRow(
