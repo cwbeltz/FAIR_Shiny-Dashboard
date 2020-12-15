@@ -36,13 +36,16 @@ server <- function(input, output) {
       geom_point(aes(fill=dateSplit, shape=dateSplit, size=dateSplit)) +
       scale_shape_manual(values=shapeValues,
                          name="",
-                         labels=c("INITIAL", "FINAL")) +
+                         breaks=c("INITIAL", "FINAL"),
+                         labels=c("Initial  ", "Most Recent")) +
       scale_fill_manual(values=fillValues,
                         name="",
-                        labels=c("INITIAL", "FINAL")) +
+                        breaks=c("INITIAL", "FINAL"),
+                        labels=c("Initial  ", "Most Recent")) +
       scale_size_manual(values=sizeValues,
                         name="",
-                        labels=c("INITIAL", "FINAL")) +
+                        breaks=c("INITIAL", "FINAL"),
+                        labels=c("Initial  ", "Most Recent")) +
       xlim(0,1) +
       theme_ADC_modified +
       xlab("Mean Score for the Selected Time Period") +
@@ -86,19 +89,19 @@ server <- function(input, output) {
       scale_fill_manual(values=fillValues,
                         name="",
                         breaks=c("INITIAL", "INTERMEDIATE", "FINAL", "DOI"),
-                        labels=c("INITIAL", "INTERMEDIATE", "Most Recent", "Most Recent w/ Issued DOI")) +
+                        labels=c("Initial  ", "Intermediate  ", "Most Recent  ", "Most Recent w/ Issued DOI")) +
       scale_color_manual(values=colorValues,
                          name="",
                          breaks=c("INITIAL", "INTERMEDIATE", "FINAL", "DOI"),
-                         labels=c("INITIAL", "INTERMEDIATE", "Most Recent", "Most Recent w/ Issued DOI")) +
+                         labels=c("Initial  ", "Intermediate  ", "Most Recent  ", "Most Recent w/ Issued DOI")) +
       scale_shape_manual(values=shapeValues,
                          name="",
                          breaks=c("INITIAL", "INTERMEDIATE", "FINAL", "DOI"),
-                         labels=c("INITIAL", "INTERMEDIATE", "Most Recent", "Most Recent w/ Issued DOI")) +
+                         labels=c("Initial  ", "Intermediate  ", "Most Recent  ", "Most Recent w/ Issued DOI")) +
       scale_size_manual(values=sizeValues,
                         name="",
                         breaks=c("INITIAL", "INTERMEDIATE", "FINAL", "DOI"),
-                        labels=c("INITIAL", "INTERMEDIATE", "Most Recent", "Most Recent w/ Issued DOI")) +
+                        labels=c("Initial  ", "Intermediate  ", "Most Recent  ", "Most Recent w/ Issued DOI")) +
       theme(axis.text.x=element_blank(),
             axis.ticks.x=element_blank())
     
