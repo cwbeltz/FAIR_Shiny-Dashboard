@@ -168,16 +168,16 @@ server <- function(input, output) {
       geom_bar(data = gganimate_NSF_monthly_nOnly, aes(x=date_floor, y=n, group=seq_along(date_floor)), fill="gray65", stat = 'identity', alpha=0.8) +
       geom_line(data = gganimate_NSF_monthly, aes(x=date_floor, y=score*4000, linetype=type, color=type, size=type, alpha=type)) +
       scale_color_manual(values=colorValues,
-                         name="FAIR Score Category:",
+                         name="",
                          labels=c("Overall", "Findable", "Accessible", "Interoperable", "Reusable")) +
       scale_linetype_manual(values=lineValues,
-                            name="FAIR Score Category:",
+                            name="",
                             labels=c("Overall", "Findable", "Accessible", "Interoperable", "Reusable")) +
       scale_size_manual(values=sizeValues,
-                        name="FAIR Score Category:",
+                        name="",
                         labels=c("Overall", "Findable", "Accessible", "Interoperable", "Reusable")) +
       scale_alpha_manual(values=alphaValues,
-                         name="FAIR Score Category:",
+                         name="",
                          labels=c("Overall", "Findable", "Accessible", "Interoperable", "Reusable")) +
       scale_y_continuous(name = 'Monthly Dataset Uploads', 
                          sec.axis = sec_axis(~./4000, name = "Mean Monthly FAIR Score")) +
