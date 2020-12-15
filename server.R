@@ -75,9 +75,9 @@ server <- function(input, output) {
     #graph overall scores on y-axis and sequenceIds on the x-axis, with the score of each pid represented by a point
     
     scatter_plot <- ggplot(data=plotData_dataPackages, aes(x=sequenceId, y=scoreOverall)) +
-      geom_jitter(data=plotData_dataPackages[plotData_dataPackages$dateSplit=="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit), alpha=0.3, width=0.3, height=0) +
-      geom_point(data=plotData_dataPackages[plotData_dataPackages$dateSplit!="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit)) +
-      geom_point(data=plotData_dataPackages[plotData_dataPackages$dateSplit=="FINAL" & plotData_dataPackages$DOI_present=="DOI",], aes(color=DOI_present, fill=DOI_present, shape=dateSplit, size=dateSplit)) +
+      geom_jitter(data=plotData_dataPackages[plotData_dataPackages$dateSplit=="INTERMEDIATE",], aes(color=aesMap, fill=aesMap, shape=aesMap, size=aesMap), alpha=0.3, width=0.3, height=0) +
+      geom_point(data=plotData_dataPackages[plotData_dataPackages$dateSplit!="INTERMEDIATE",], aes(color=aesMap, fill=aesMap, shape=aesMap, size=aesMap)) +
+      geom_point(data=plotData_dataPackages[plotData_dataPackages$dateSplit=="FINAL" & plotData_dataPackages$DOI_present=="DOI",], aes(color=aesMap, fill=aesMap, shape=aesMap, size=aesMap)) +
       theme_ADC_modified +
       ylim(0,1) +
       ylab("Overall Score") +
@@ -85,16 +85,16 @@ server <- function(input, output) {
       scale_x_discrete(limits = seqId_axis_order_chronology$sequenceId[order(seqId_axis_order_chronology$dateUploaded)]) +
       scale_fill_manual(values=fillValues,
                         name="",
-                        labels=c("FINAL", "INITIAL", "INTERMEDIATE")) +
+                        labels=c("DOI", "FINAL", "INITIAL", "INTERMEDIATE")) +
       scale_color_manual(values=colorValues,
                          name="",
-                         labels=c("FINAL", "INITIAL", "INTERMEDIATE")) +
+                         labels=c("DOI", "FINAL", "INITIAL", "INTERMEDIATE")) +
       scale_shape_manual(values=shapeValues,
                          name="",
-                         labels=c("FINAL", "INITIAL", "INTERMEDIATE")) +
+                         labels=c("DOI", "FINAL", "INITIAL", "INTERMEDIATE")) +
       scale_size_manual(values=sizeValues,
                         name="",
-                        labels=c("FINAL", "INITIAL", "INTERMEDIATE")) +
+                        labels=c("DOI", "FINAL", "INITIAL", "INTERMEDIATE")) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
       theme(axis.title.x=element_blank(),
             axis.text.x=element_blank(),   #TODO_CWB: Remove at later date once submitter is available.
