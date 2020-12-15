@@ -81,20 +81,24 @@ server <- function(input, output) {
       theme_ADC_modified +
       ylim(0,1) +
       ylab("Overall Score") +
-      xlab("Unique Data Packages \n (ordered chronologically by most recent update)") +
+      xlab("Unique Data Packages for Selected Time Period \n (ordered chronologically by most recent update)") +
       scale_x_discrete(limits = seqId_axis_order_chronology$sequenceId[order(seqId_axis_order_chronology$dateUploaded)]) +
       scale_fill_manual(values=fillValues,
                         name="",
-                        labels=c("DOI", "FINAL", "INITIAL", "INTERMEDIATE")) +
+                        breaks=c("INITIAL", "INTERMEDIATE", "FINAL", "DOI"),
+                        labels=c("INITIAL", "INTERMEDIATE", "Most Recent", "Most Recent w/ Issued DOI")) +
       scale_color_manual(values=colorValues,
                          name="",
-                         labels=c("DOI", "FINAL", "INITIAL", "INTERMEDIATE")) +
+                         breaks=c("INITIAL", "INTERMEDIATE", "FINAL", "DOI"),
+                         labels=c("INITIAL", "INTERMEDIATE", "Most Recent", "Most Recent w/ Issued DOI")) +
       scale_shape_manual(values=shapeValues,
                          name="",
-                         labels=c("DOI", "FINAL", "INITIAL", "INTERMEDIATE")) +
+                         breaks=c("INITIAL", "INTERMEDIATE", "FINAL", "DOI"),
+                         labels=c("INITIAL", "INTERMEDIATE", "Most Recent", "Most Recent w/ Issued DOI")) +
       scale_size_manual(values=sizeValues,
                         name="",
-                        labels=c("DOI", "FINAL", "INITIAL", "INTERMEDIATE")) +
+                        breaks=c("INITIAL", "INTERMEDIATE", "FINAL", "DOI"),
+                        labels=c("INITIAL", "INTERMEDIATE", "Most Recent", "Most Recent w/ Issued DOI")) +
       theme(axis.text.x=element_blank(),
             axis.ticks.x=element_blank())
     
