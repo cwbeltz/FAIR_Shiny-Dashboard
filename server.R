@@ -77,6 +77,7 @@ server <- function(input, output) {
     scatter_plot <- ggplot(data=plotData_dataPackages, aes(x=sequenceId, y=scoreOverall)) +
       geom_jitter(data=plotData_dataPackages[plotData_dataPackages$dateSplit=="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit), alpha=0.3, width=0.3, height=0) +
       geom_point(data=plotData_dataPackages[plotData_dataPackages$dateSplit!="INTERMEDIATE",], aes(color=dateSplit, fill=dateSplit, shape=dateSplit, size=dateSplit)) +
+      geom_point(data=plotData_dataPackages[plotData_dataPackages$dateSplit=="FINAL" & plotData_dataPackages$DOI_present=="DOI",], aes(color=DOI_present, fill=dateSplit, shape=dateSplit, size=dateSplit)) +
       theme_ADC_modified +
       ylim(0,1) +
       ylab("Overall Score") +

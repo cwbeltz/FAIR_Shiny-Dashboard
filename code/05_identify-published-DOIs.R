@@ -13,3 +13,14 @@
 ############################################
 ## Identify datasets published with a DOI ##
 ############################################
+
+aggScore_clean <- aggScore_clean %>% 
+  mutate(DOI_present = case_when(
+    "doi" == substr(pid,1,3) ~ "DOI",
+    TRUE ~ "none"))
+
+aggScore_clean$DOI_present <- factor(aggScore_clean$DOI_present)
+
+  
+
+

@@ -17,6 +17,7 @@ source(here::here("code", "01_load-data.R"))
 source(here::here("code", "02_clean-data.R"))
 source(here::here("code", "03_identify-initial-final-versions.R"))
 source(here::here("code", "04_calculations.R"))
+source(here::here("code", "05_identify-published-DOIs.R"))
 
 source(here::here("code", "graphical_theme", "theme_modified_ADC.R"))
 source(here::here("code", "graphical_theme", "colors-shapes.R"))

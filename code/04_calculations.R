@@ -17,7 +17,7 @@ most_recent_upload$pid <- aggScore_clean$pid[which(aggScore_clean$dateUploaded==
 
 
 
-#calculate weekly, monthly, and annual means scores
+#calculate monthly mean scores
 monthly_mean_scores <- aggScore_clean %>% 
   filter(dateUploaded > (Sys.time()-lubridate::days(365*1))) %>%
   mutate(month_floor = lubridate::floor_date(dateUploaded, unit="month")) %>% 
