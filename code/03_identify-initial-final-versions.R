@@ -23,16 +23,5 @@ aggScore_dateSplit <- aggScore_clean %>%
     dateUploaded == max(dateUploaded) ~ "FINAL",
     TRUE ~ "INTERMEDIATE"))
 
-#change factor levels for better plotting later
-aggScore_dateSplit$dateSplit <- factor(aggScore_dateSplit$dateSplit, levels=c("INITIAL", "INTERMEDIATE", "FINAL"))
-
-levels(aggScore_dateSplit$dateSplit)
-
-#previous version that didn't work in 100% of cases
-# mutate(dateSplit = case_when(
-#   is.na(obsoletes) ~ "INITIAL",
-#   is.na(obsoletedBy) ~ "FINAL",
-#   TRUE ~ "INTERMEDIATE"))
-
 
 aggScore_clean <- aggScore_dateSplit

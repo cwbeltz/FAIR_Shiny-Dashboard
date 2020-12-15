@@ -81,7 +81,7 @@ server <- function(input, output) {
       theme_ADC_modified +
       ylim(0,1) +
       ylab("Overall Score") +
-      xlab("Data Package Unique Sequence ID \n (ordered chronologically by most recent update)") +
+      xlab("Unique Data Packages \n (ordered chronologically by most recent update)") +
       scale_x_discrete(limits = seqId_axis_order_chronology$sequenceId[order(seqId_axis_order_chronology$dateUploaded)]) +
       scale_fill_manual(values=fillValues,
                         name="",
@@ -95,9 +95,7 @@ server <- function(input, output) {
       scale_size_manual(values=sizeValues,
                         name="",
                         labels=c("DOI", "FINAL", "INITIAL", "INTERMEDIATE")) +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-      theme(axis.title.x=element_blank(),
-            axis.text.x=element_blank(),   #TODO_CWB: Remove at later date once submitter is available.
+      theme(axis.text.x=element_blank(),
             axis.ticks.x=element_blank())
     
     scatter_plot
