@@ -13,7 +13,7 @@ ui <- fluidPage(
                                  timeFormat="%Y-%m-%d", step = 7),
                      actionButton(inputId = "clicks",
                                   label = "Update Timespan")),
-           wellPanel(verbatimTextOutput("data_package_info"))),
+           wellPanel(htmlOutput("data_package_info"))),
     column(8,
            plotOutput("binned_scatterplot_packageLevel", click = "click_data_package_info")),
     fluidRow(

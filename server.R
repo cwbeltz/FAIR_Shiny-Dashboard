@@ -111,8 +111,12 @@ server <- function(input, output) {
   
   ########## NEW ##############
   
-  output$data_package_info <- renderPrint({
-    nearPoints(aggScore_clean, input$click_data_package_info)
+  output$data_package_info <- renderText({
+    test_object <- nearPoints(aggScore_clean, input$click_data_package_info, threshold = 5, maxpoints = 1) %>% 
+      dplyr::select(pid, dateUploaded, sequenceId)
+    
+    paste("<B>Title:</B>", "<br><B>Submitter:</B>", "<br><B>PID:</B>" , test_object$pid, "<br><B>Date Uploaded:</B>", test_object$dateUploaded)
+    
   })
   
   
