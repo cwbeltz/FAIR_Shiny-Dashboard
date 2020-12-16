@@ -12,10 +12,7 @@
 #load packages
 library(tidyverse)
 library(lubridate)
-# library(reshape2)
-# library(dataone)
-# library(EML)
-# library(emld)
+library(plotly)
 library(shiny)
 library(here)
 
