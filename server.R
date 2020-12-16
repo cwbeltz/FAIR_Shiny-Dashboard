@@ -115,7 +115,7 @@ server <- function(input, output) {
     test_object <- nearPoints(aggScore_clean, input$click_data_package_info, threshold = 5, maxpoints = 1) %>% 
       dplyr::select(pid, dateUploaded, sequenceId)
     
-    paste("<B>Title:</B>", "<br><B>Submitter:</B>", "<br><B>PID:</B>" , test_object$pid, "<br><B>Date Uploaded:</B>", test_object$dateUploaded)
+    paste("<B>Title:</B> [field not yet functional]", "<br><B>Submitter:</B> [field not yet functional]", "<br><B>PID:</B>" , test_object$pid, "<br><B>Date Uploaded:</B>", test_object$dateUploaded)
     
   })
   
