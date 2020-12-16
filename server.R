@@ -109,6 +109,12 @@ server <- function(input, output) {
   })
   
   
+  ########## NEW ##############
+  
+  output$data_package_info <- renderPrint({
+    nearPoints(aggScore_clean, input$click_data_package_info)
+  })
+  
   
   #### FAIR score time series ####
   output$linegraph_FAIR_overview <- renderPlot({
