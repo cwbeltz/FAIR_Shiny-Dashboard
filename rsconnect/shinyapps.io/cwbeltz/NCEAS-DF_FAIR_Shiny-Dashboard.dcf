@@ -5,8 +5,8 @@ account: cwbeltz
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3332832
-bundleId: 4057440
+bundleId: 4068811
 url: https://cwbeltz.shinyapps.io/nceas-df_fair_shiny-dashboard/
-when: 1609783318.35639
+when: 1610033244.24051
 asMultiple: FALSE
 asStatic: FALSE
