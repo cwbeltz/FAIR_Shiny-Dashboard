@@ -125,12 +125,39 @@ server <- function(input, output) {
   
   ########## Selected Data Package: Individual Checks ##############
   
-  output$data_package_individual_checks <- renderText({
+  output$data_package_individual_checks <- renderPlot({
 
     test_object2 <- indivChecks_clean %>%
       filter(pid == test_object()$pid)
 
-    print(unique(test_object2$series_id))
+    indivCheck_subset <- indivChecks_clean %>% 
+      filter(series_id == test_object2$series_id)
+    
+    ggplot(indivCheck_subset, aes(x=check_status, y=check_name)) +
+      geom_point() +
+      # geom_line(data=plotData_5_post2016, aes(group=check_name, color=dateSplit), size=1.2) +
+      # geom_point(data=plotData_5_post2016, aes(fill=dateSplit, shape=dateSplit, size=dateSplit)) +
+      facet_wrap(~ check_type, scale="free", nrow=1) +
+      # scale_shape_manual(values=shapeValues,
+      #                    name="Score at",
+      #                    labels=c("initial submission", "final publication")) +
+      # scale_fill_manual(values=fillValues,
+      #                   name="Score at",
+      #                   labels=c("initial submission", "final publication")) +
+      # scale_color_manual(values=colorValues,
+      #                    name="Score is",
+      #                    labels=c("improving", "deteriorating")) +
+      # scale_size_manual(values=sizeValues) +
+      # theme_ADC_modified +
+      # xlab("") +
+      # ylab("") +
+      # theme(strip.text.x = element_text(size = 14, colour = "black", face="bold"),
+      #       panel.border = element_rect(colour = "black", fill=NA)) +
+      # theme(axis.text.y = element_text(size = 10),
+      #       axis.text.x = element_text(size = 10)) +
+      # guides(size = FALSE,
+      #        fill = guide_legend(override.aes = list(size = 3))
+      )
 
 
 

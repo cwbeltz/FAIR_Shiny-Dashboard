@@ -21,7 +21,7 @@ ui <- fluidPage(
                   tabPanel("Aggregate Metrics", 
                            column(4, plotOutput("barplot_detailed_scores")),
                            column(8, plotOutput("linegraph_FAIR_overview"))),
-                  tabPanel("Individual Checks - Data Package", verbatimTextOutput("data_package_individual_checks"))
+                  tabPanel("Individual Checks - Data Package", plotOutput("data_package_individual_checks"))
       )
     )
   )
