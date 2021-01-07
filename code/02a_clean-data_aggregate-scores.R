@@ -63,8 +63,12 @@ agg_score_seqPos_pidUnique_ADC <- agg_score_seqPos_ADC[-which(agg_score_seqPos_A
 # length(unique(agg_score_seqPos_pidUnique_ADC$sequenceId)) #TOTAL=5932
 
 
-#CREAT CLEANED DATASET
+#CREATE CLEANED DATASET
 aggScore_clean <- agg_score_seqPos_pidUnique_ADC
+
+
+
+
 
 
 ###REMOVE UNNECESSARY STUFF

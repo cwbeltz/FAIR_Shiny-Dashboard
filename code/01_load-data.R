@@ -33,9 +33,20 @@ aggregate_score_ADC <- read_csv(file=path_ADC_aggregate_score)
 
 
 
+#####################################################################################
+####                         LOAD INDIVIDUAL CHECK DATA                          ####
+#####################################################################################
+
+#get path to aggregate FAIR scores for ADC data using locally stored copy
+path_ADC_individual_checks <- here("data", "raw", "fair-0.3.1-checks-joined.rda")
+
+#load aggregate FAIR scores
+individual_checks_ADC <- load(file=path_ADC_individual_checks)
 
 
-###REMOVE UNNECESSARY STUFF
+
+
+#### REMOVE UNNECESSARY STUFF ####
 rm(path_ADC_aggregate_score)
 
 

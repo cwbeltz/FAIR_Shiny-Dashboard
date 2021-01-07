@@ -109,16 +109,32 @@ server <- function(input, output) {
   })
   
   
-  ########## NEW ##############
+  ########## Selected Data Package: General Information ##############
+  
+  test_object <- reactive({
+    nearPoints(aggScore_clean, input$click_data_package_info, threshold = 5, maxpoints = 1) %>% 
+    dplyr::select(pid, dateUploaded, sequenceId)
+  })
   
   output$data_package_info <- renderText({
-    test_object <- nearPoints(aggScore_clean, input$click_data_package_info, threshold = 5, maxpoints = 1) %>% 
-      dplyr::select(pid, dateUploaded, sequenceId)
     
-    paste("<B>Title:</B> [field not yet functional]", "<br><B>Submitter:</B> [field not yet functional]", "<br><B>PID:</B>" , test_object$pid, "<br><B>Date Uploaded:</B>", test_object$dateUploaded)
+    paste("<B>Title:</B> [field not yet functional]", "<br><B>Submitter:</B> [field not yet functional]", "<br><B>PID:</B>" , test_object()$pid, "<br><B>Date Uploaded:</B>", test_object()$dateUploaded)
     
   })
   
+  
+  ########## Selected Data Package: Individual Checks ##############
+  
+  output$data_package_individual_checks <- renderText({
+
+    test_object2 <- indivChecks_clean %>%
+      filter(pid == test_object()$pid)
+
+    print(unique(test_object2$series_id))
+
+
+
+  })
   
   #### FAIR score time series ####
   output$linegraph_FAIR_overview <- renderPlot({
