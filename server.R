@@ -134,29 +134,35 @@ server <- function(input, output) {
       filter(series_id == test_object2$series_id)
     
     ggplot(indivCheck_subset, aes(x=check_status, y=check_name)) +
-      geom_point() +
-      # geom_line(data=plotData_5_post2016, aes(group=check_name, color=dateSplit), size=1.2) +
-      # geom_point(data=plotData_5_post2016, aes(fill=dateSplit, shape=dateSplit, size=dateSplit)) +
+      geom_jitter(data=indivCheck_subset[indivCheck_subset$dateSplit=="INTERMEDIATE",], aes(color=aesMap, fill=aesMap, shape=aesMap, size=aesMap), alpha=0.3, width=0.3, height=0) +
+      geom_point(data=indivCheck_subset[indivCheck_subset$dateSplit!="INTERMEDIATE",], aes(color=aesMap, fill=aesMap, shape=aesMap, size=aesMap)) +
+      geom_point(data=indivCheck_subset[indivCheck_subset$dateSplit=="FINAL" & indivCheck_subset$DOI_present=="DOI",], aes(color=aesMap, fill=aesMap, shape=aesMap, size=aesMap)) +
+      theme_ADC_modified +
       facet_wrap(~ check_type, scale="free", nrow=1) +
-      # scale_shape_manual(values=shapeValues,
-      #                    name="Score at",
-      #                    labels=c("initial submission", "final publication")) +
-      # scale_fill_manual(values=fillValues,
-      #                   name="Score at",
-      #                   labels=c("initial submission", "final publication")) +
-      # scale_color_manual(values=colorValues,
-      #                    name="Score is",
-      #                    labels=c("improving", "deteriorating")) +
-      # scale_size_manual(values=sizeValues) +
-      # theme_ADC_modified +
-      # xlab("") +
-      # ylab("") +
-      # theme(strip.text.x = element_text(size = 14, colour = "black", face="bold"),
-      #       panel.border = element_rect(colour = "black", fill=NA)) +
-      # theme(axis.text.y = element_text(size = 10),
-      #       axis.text.x = element_text(size = 10)) +
-      # guides(size = FALSE,
-      #        fill = guide_legend(override.aes = list(size = 3))
+      scale_fill_manual(values=fillValues,
+                        name="",
+                        breaks=c("INITIAL", "INTERMEDIATE", "FINAL", "DOI"),
+                        labels=c("Initial  ", "Intermediate  ", "Most Recent  ", "Most Recent w/ Issued DOI")) +
+      scale_color_manual(values=colorValues,
+                         name="",
+                         breaks=c("INITIAL", "INTERMEDIATE", "FINAL", "DOI"),
+                         labels=c("Initial  ", "Intermediate  ", "Most Recent  ", "Most Recent w/ Issued DOI")) +
+      scale_shape_manual(values=shapeValues,
+                         name="",
+                         breaks=c("INITIAL", "INTERMEDIATE", "FINAL", "DOI"),
+                         labels=c("Initial  ", "Intermediate  ", "Most Recent  ", "Most Recent w/ Issued DOI")) +
+      scale_size_manual(values=sizeValues,
+                        name="",
+                        breaks=c("INITIAL", "INTERMEDIATE", "FINAL", "DOI"),
+                        labels=c("Initial  ", "Intermediate  ", "Most Recent  ", "Most Recent w/ Issued DOI")) +
+      xlab("") +
+      ylab("") +
+      theme(strip.text.x = element_text(size = 14, colour = "black", face="bold"),
+            panel.border = element_rect(colour = "black", fill=NA)) +
+      theme(axis.text.y = element_text(size = 10),
+            axis.text.x = element_text(size = 10)) +
+      guides(size = FALSE,
+             fill = guide_legend(override.aes = list(size = 3))
       )
 
 
