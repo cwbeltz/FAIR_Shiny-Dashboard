@@ -26,7 +26,7 @@
 #####################################################################################
 
 #get path to aggregate FAIR scores for ADC data using locally stored copy
-path_ADC_aggregate_score <- here("data", "raw", "output_2021-01-07_aggregate-score-data.csv")
+path_ADC_aggregate_score <- here("data", "raw", "output_2021-01-22_aggregate-score-data.csv")
 
 #load aggregate FAIR scores
 aggregate_score_ADC <- read_csv(file=path_ADC_aggregate_score)
