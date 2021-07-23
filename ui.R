@@ -9,7 +9,7 @@ ui <- fluidPage(
                                  label = "Date Range:",
                                  min = as.Date("2016-03-21","%Y-%m-%d"),
                                  max = as.Date(Sys.Date(),"%Y-%m-%d"),
-                                 value = c(Sys.Date()-14, Sys.Date()), 
+                                 value = c(as.Date("2020-10-01")-14, as.Date("2020-10-01")), 
                                  timeFormat="%Y-%m-%d", step = 7),
                      actionButton(inputId = "clicks",
                                   label = "Update Timespan")),
