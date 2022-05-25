@@ -22,13 +22,13 @@ FAIR-Shiny-Dashboard
 
 ### Getting started
 
-Navigate to [shinyapps.io](https://cwbeltz.shinyapps.io/nceas-df_fair_shiny-dashboard/) to bring up the current cloud-hosted version of the dashboard. This dashboard is meant to be used to visualize metrics about the completeness of data packages with the ADC repository. This allows a retroactive assessment of data quality and improvement through curation, but is also meant as an aid for tracking data packages in the process of being curated.
+Navigate to [shinyapps.io](https://cwbeltz.shinyapps.io/nceas-df_fair_shiny-dashboard/) to bring up the current cloud-hosted version of the dashboard. This dashboard is meant to be used to visualize metrics about the completeness of data packages with the ADC repository. This allows a retroactive assessment of data quality and improvement through curation, but is also meant as an aid for tracking data packages in the process of being curated. Typically there are 30-60 packages being currated at any one time, often by 5-10 separate individuals. The goal was to develop a dashboard that allows for an assessment of all recent packages by a single individual managing the data package curation.
 
 The application opens with four sections of panels: data range & package-specfic information such as Date Uploaded (top left), all recent data packages with the Overall Score associated with the initial and recent versions, along with any intermediate versions (top right), aggregate metrics for all packages in the selected timeframe across for specific FAIR categories (bottom left), and aggregate FAIR metrics for all months since the inception of the ADC repository, with selected timeframe highlighted in gray (bottom right).
   
 If you click on any of the data points for a specific package in the upper right pane, you are then able to examine each of the 54 checks that are made across the four FAIR categories using the tab for "Individual Checks - Data Package" in between the upper and lower panels.
 
-Note that the data is current as of 2021-01-21 22:42:13 PT, so all time selections should include a range prior to that period.
+Please note three things: 1) the data is current as of 2021-01-21 22:42:13 PT, so all time selections should include a range prior to that period, and 2) a data point must be selected in the upper right-hand pane prior to examining package-specific check information or an error will show.
 
 
 
